@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: flask-config
+  namespace: demo
+data:
+  FLASK_MESSAGE: "Hello from ConfigMap!"

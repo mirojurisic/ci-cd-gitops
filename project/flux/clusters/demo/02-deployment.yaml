@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-flask
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-flask
+  template:
+    metadata:
+      labels:
+        app: demo-flask
+    spec:
+      containers:
+        - name: flask
+          image: placeholder/flask-app:v1.0.6
+          ports:
+            - containerPort: 5000
+          env:
+          - name: FLASK_MESSAGE
+            valueFrom:
+              configMapKeyRef:
+                name: flask-config
+                key: FLASK_MESSAGE
