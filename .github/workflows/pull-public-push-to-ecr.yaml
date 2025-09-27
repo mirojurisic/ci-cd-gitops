@@ -1,9 +1,8 @@
-name: Build and Push to ECR
+name: Pull public and Push to ECR
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'  # Only trigger on semver tags
+  workflow_dispatch:
+
 
 jobs:
   build:
