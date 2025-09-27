@@ -36,5 +36,5 @@ jobs:
         run: |
           cd ./project/app/python
           IMAGE_URI=${{ secrets.ECR_REPOSITORY }}:${VERSION}
-          docker build -t $IMAGE_URI . -f 
+          docker build -t $IMAGE_URI . 
           docker push $IMAGE_URI
