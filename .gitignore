@@ -4,3 +4,5 @@ project/app/python/.env
 *.tfvars.backup
 *state.backup
 *.terraform.lock.hcl
+*.terraform.tfstate.lock.info
+project/terraform/.terraform/*
