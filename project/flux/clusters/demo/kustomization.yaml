@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 2m
-  path: "./clusters/demo"
+  path: "./project/clusters/demo"
   prune: true
   sourceRef:
     kind: GitRepository

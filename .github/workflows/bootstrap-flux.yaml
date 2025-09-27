@@ -52,7 +52,7 @@ jobs:
             --owner=${{ env.GITHUB_USERNAME }} \ 
             --repository=${{ env.GIT_REPOSITORY }}  \
             --branch=main \
-            --path=clusters/demo \
+            --path=project/clusters/demo \
             --personal \
             --token-auth
 # --token-auth uses the PAT stored in GITHUB_PAT
