@@ -1,2 +1,5 @@
 project/app/python/.env
 *.tfstate
+*.tfvars
+*.tfvars.backup
+*state.backup
