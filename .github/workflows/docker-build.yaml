@@ -34,6 +34,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          cd ./project/app/python
           IMAGE_URI=${{ secrets.ECR_REPOSITORY }}:${VERSION}
-          docker build -t $IMAGE_URI . -f ./project/app/python/Dockerfile
+          docker build -t $IMAGE_URI . -f 
           docker push $IMAGE_URI
