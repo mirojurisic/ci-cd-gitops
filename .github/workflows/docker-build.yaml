@@ -3,7 +3,7 @@ name: Build and Push to ECR
 on:
   push:
     tags:
-      - 'v*.*.*'  # Only trigger on semver tags
+      - '*.*.*'  # Only trigger on semver tags
 
 jobs:
   build:
