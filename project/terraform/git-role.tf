@@ -16,6 +16,7 @@ resource "aws_iam_role" "github_actions_role" {
         Action = "sts:AssumeRoleWithWebIdentity",
         Condition = {
           StringLike = {
+            "token.actions.githubusercontent.com:aud" : "sts.amazonaws.com",
             "token.actions.githubusercontent.com:sub" = "repo:${var.github_org}/${var.github_repo}:*"
           }
         }
@@ -41,7 +42,17 @@ resource "aws_iam_policy" "ecr_policy" {
           "ecr:GetDownloadUrlForLayer",
           "ecr:InitiateLayerUpload",
           "ecr:PutImage",
-          "ecr:UploadLayerPart"
+          "ecr:UploadLayerPart",
+          "eks:DescribeCluster",
+          "eks:ListClusters",
+          "eks:UpdateClusterVersion",
+          "eks:AccessKubernetesApi",
+          "iam:PassRole",
+          "ec2:DescribeSubnets",
+          "ec2:DescribeVpcs",
+          "ec2:DescribeRouteTables",
+          "cloudformation:DescribeStacks",
+          "cloudformation:ListStackResources"
         ],
         Resource = "*"
       }

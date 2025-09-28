@@ -1,0 +1,68 @@
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: ecr-credentials-sync
+  namespace: flux-system
+spec:
+  suspend: false
+  schedule: 0 */6 * * *
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: ecr-credentials-sync
+          restartPolicy: Never
+          volumes:
+          - name: token
+            emptyDir:
+              medium: Memory
+# Special containers that run before the main app containers.
+# They always run sequentially (one after another).
+# Each initContainer must finish successfully before the next one (or the main container) starts.
+          initContainers:
+          - image: 796618404628.dkr.ecr.eu-central-1.amazonaws.com/amazon/aws-cli
+            name: get-token
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: REGION
+              value: eu-central-1
+            volumeMounts:
+            - mountPath: /token
+              name: token
+            command:
+            - /bin/sh
+            - -ce
+            - aws ecr get-login-password --region ${REGION} > /token/ecr-token
+          containers:
+          - image: 796618404628.dkr.ecr.eu-central-1.amazonaws.com/bitnami/kubectl
+            name: create-secret
+            imagePullPolicy: IfNotPresent
+            env:
+            - name: SECRET_NAME
+              value: ecr-credentials
+            - name: ECR_REGISTRY
+              value: 796618404628.dkr.ecr.eu-central-1.amazonaws.com # fill in the account id and region
+            volumeMounts:
+            - mountPath: /token
+              name: token
+            command:
+            - /bin/bash
+            - -ce
+            - |-
+              kubectl delete secret --ignore-not-found $SECRET_NAME
+              kubectl create secret docker-registry $SECRET_NAME \
+                --docker-server="$ECR_REGISTRY" \
+                --docker-username=AWS \
+                --docker-password="$(</token/ecr-token)"
+
+
+# Both initContainers and containers can be used in any PodSpec, which means:
+# Pod
+# Deployment
+# DaemonSet
+# Job
+# CronJob
+# StatefulSet

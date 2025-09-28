@@ -13,9 +13,10 @@ spec:
       labels:
         app: demo-flask
     spec:
+      serviceAccountName: ecr-credentials-sync
       containers:
         - name: flask
-          image: placeholder/flask-app:v1.0.6
+          image: 796618404628.dkr.ecr.eu-central-1.amazonaws.com/flask-app-int:1.0.0 # {"$imagepolicy": "flux-system:flask-app"}
           ports:
             - containerPort: 5000
           env:

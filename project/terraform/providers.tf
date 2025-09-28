@@ -2,6 +2,16 @@ provider "aws" {
   region = var.aws_region
 }
 
+terraform {
+  required_version = ">= 1.3"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 5.13" # Must match EKS module requirements
+    }
+  }
+}
 # provider "kubernetes" {
 #   config_path = "~/.kube/config"
 # }
